@@ -9,10 +9,10 @@ type Input = {
   telephone: Telephone;
 };
 
-export class RegisterUser implements UseCase<Input, Status> {
+export class RegisterUser implements UseCase<Input, Status | void> {
   constructor(private readonly repository: RepositoryUser) {}
 
-  async execute(data: Input): Promise<Status> {
+  async execute(data: Input): Promise<Status | void> {
     const { name, email, password, telephone } = data;
     const numberExist = await this.repository.findByNumber(telephone);
 
@@ -26,13 +26,11 @@ export class RegisterUser implements UseCase<Input, Status> {
       return { message: "email already exist", status: "error" };
     }
 
-    const newUser = await this.repository.create({
+    await this.repository.create({
       name,
       email,
       password,
       telephone,
     });
-
-    return { message: `welcome user : ${newUser}`, status: "sucess" };
   }
 }

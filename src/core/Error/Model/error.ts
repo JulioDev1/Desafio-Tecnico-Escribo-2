@@ -1,4 +1,4 @@
 interface Status {
-  message?: string;
-  status?: string;
+  message: string;
+  status: string;
 }

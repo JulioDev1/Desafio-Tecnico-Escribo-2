@@ -1,7 +1,7 @@
-export interface Telephone {
-  dd: string;
+export type Telephone = {
+  ddd: string;
   phone: string;
-}
+};
 
 export interface User {
   id?: string;
