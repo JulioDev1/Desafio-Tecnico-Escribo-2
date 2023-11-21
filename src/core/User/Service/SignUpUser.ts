@@ -13,12 +13,12 @@ export class RegisterUser implements UseCase<Input, Status | void> {
   constructor(private readonly repository: RepositoryUser) {}
 
   async execute(data: Input): Promise<Status | void> {
-    const { name, email, password, telephone } = data;
-    const numberExist = await this.repository.findByNumber(telephone);
-
-    if (numberExist) {
-      return { message: "number already use", status: "error" };
-    }
+    const {
+      name,
+      email,
+      password,
+      telephone: { ddd, phone },
+    } = data;
 
     const emailAlready = await this.repository.findByEmail(email);
 
@@ -30,7 +30,7 @@ export class RegisterUser implements UseCase<Input, Status | void> {
       name,
       email,
       password,
-      telephone,
+      telephone: { ddd, phone },
     });
   }
 }
