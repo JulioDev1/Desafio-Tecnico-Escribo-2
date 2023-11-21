@@ -1,15 +1,17 @@
 import express from "express";
-import RepositoryPrismaSl from "./external/prisma/RepositoryPrismaSl";
 import { RegisterUser } from "./core/User/Service/SignUpUser";
 import UserController from "./adpaters/RegisterController";
 
 const app = express();
 const port = 3000;
+app.use(express);
 
-const repositoryUser = new RepositoryPrismaSl();
-const registerUser = new RegisterUser(repositoryUser);
+const registerUser = new RegisterUser();
+const userController = new UserController(registerUser);
 
-new UserController(app, registerUser).handleCreate;
+app.post("/create", (request, response) =>
+  userController.createAccountController(request, response)
+);
 
 app.listen(port, () => {
   console.log(`server isrunning in port now ${port}`);
