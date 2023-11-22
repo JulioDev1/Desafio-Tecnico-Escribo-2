@@ -3,17 +3,13 @@ import { app } from "./app"
 import request from "supertest"
 
 let server: any
-const port = process.env.PORT_TEST || 3001
+const port = process.env.PORT_TEST || 3000
 beforeAll(async () => {
-  // Encontra uma porta disponível dinamicamente
-  // Inicia o servidor na porta encontrada
   server = app.listen(port, () => {
     console.log(`Servidor ouvindo na porta ${port}`)
   })
 })
-
 afterAll((done) => {
-  // Fecha o servidor após os testes
   server.close(done)
 })
 describe("the host is working ?", () => {
