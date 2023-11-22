@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
-export function AuthMiddleware(
+export async function AuthMiddleware(
   request: Request,
   response: Response,
   next: NextFunction
@@ -13,6 +13,7 @@ export function AuthMiddleware(
       message: "token is missing",
     });
   }
+
   const [, token] = authToken.split(" ");
 
   try {

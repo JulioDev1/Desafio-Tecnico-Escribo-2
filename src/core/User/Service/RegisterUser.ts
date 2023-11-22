@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { User } from "../model/User";
+import { Telephone, User } from "../model/User";
 import UseCase from "../shared/UseCase";
 import { hash } from "bcrypt";
 import { Status } from "../../Error/Model/error";
@@ -8,6 +8,7 @@ type Input = {
   name: string;
   email: string;
   password: string;
+  telephone: Telephone[];
 };
 
 export class RegisterUser implements UseCase<Input, User | Status> {
@@ -18,7 +19,7 @@ export class RegisterUser implements UseCase<Input, User | Status> {
 
   async execute(data: Input): Promise<User | Status> {
     try {
-      const { name, email, password } = data;
+      const { name, email, password, telephone } = data;
 
       const emailAlready = await this.prisma.user.findUnique({
         where: {
@@ -37,6 +38,12 @@ export class RegisterUser implements UseCase<Input, User | Status> {
           name: name,
           email: email,
           password: hashPassword,
+          telephone: {
+            create: telephone.map((phone) => ({
+              ddd: phone.ddd,
+              phone: phone.phone,
+            })),
+          },
         },
       });
 
