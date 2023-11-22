@@ -1,7 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { Telephone, User } from "../model/User";
+import { User } from "../model/User";
 import UseCase from "../shared/UseCase";
-import RepositoryUser from "./RepositoryUser";
+import { hash } from "bcrypt";
+import { Status } from "../../Error/Model/error";
 
 type Input = {
   name: string;
@@ -18,6 +19,7 @@ export class RegisterUser implements UseCase<Input, User | Status> {
   async execute(data: Input): Promise<User | Status> {
     try {
       const { name, email, password } = data;
+
       const emailAlready = await this.prisma.user.findUnique({
         where: {
           email: email,
@@ -27,15 +29,17 @@ export class RegisterUser implements UseCase<Input, User | Status> {
       if (emailAlready) {
         return { message: "email already exist", status: "error" };
       }
-      console.log(data);
+
+      const hashPassword = await hash(password, 8);
 
       const user = await this.prisma.user.create({
         data: {
           name: name,
           email: email,
-          password: password,
+          password: hashPassword,
         },
       });
+
       return user;
     } catch (error) {
       console.log(error);

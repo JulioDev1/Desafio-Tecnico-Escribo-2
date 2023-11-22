@@ -1,18 +1,18 @@
-import express from "express";
-import { RegisterUser } from "./core/User/Service/SignUpUser";
-import UserController from "./adpaters/RegisterController";
+import express, { NextFunction, Response, Request } from "express";
+import "express-async-errors";
+
+import { router } from "./routes";
 
 const app = express();
 const port = 3000;
-app.use(express);
+app.use(express.json());
 
-const registerUser = new RegisterUser();
-const userController = new UserController(registerUser);
-
-app.post("/create", (request, response) =>
-  userController.createAccountController(request, response)
+app.use(router);
+app.use(
+  (error: Error, request: Request, response: Response, next: NextFunction) => {
+    return response.json({ status: "Error", message: error.message });
+  }
 );
-
 app.listen(port, () => {
   console.log(`server isrunning in port now ${port}`);
 });
