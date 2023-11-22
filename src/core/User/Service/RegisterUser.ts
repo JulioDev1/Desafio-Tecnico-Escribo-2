@@ -22,6 +22,9 @@ export class RegisterUser implements UseCase<Input, Output | Status> {
   async execute(data: Input): Promise<Output | Status> {
     try {
       const { name, email, password, telephone } = data
+      if (!email) {
+        return { message: "email is required", status: "error" }
+      }
 
       const emailAlready = await this.prisma.user.findUnique({
         where: {

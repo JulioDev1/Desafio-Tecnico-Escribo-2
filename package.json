@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "tsx src/server.ts",
-    "start:dev": "tsx watch src/server",
+    "start:dev": "tsx watch src/server.ts",
     "build": "tsup src",
     "test": "jest --passWithNoTests",
     "test:watch": "yarn test --watchAll",
