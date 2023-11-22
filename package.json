@@ -15,7 +15,7 @@
     "start:dev": "tsx watch src/server",
     "build": "tsup src",
     "test": "jest --passWithNoTests",
-    "test:watch": "yarn test --watch",
+    "test:watch": "yarn test --watchAll",
     "test:staged": "yarn test --findRelatedTests"
   },
   "devDependencies": {
