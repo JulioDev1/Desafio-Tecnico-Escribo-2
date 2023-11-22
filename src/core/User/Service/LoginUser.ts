@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { Status } from "../../Error/Model/error";
 import UseCase from "../shared/UseCase";
 import { compare } from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -8,41 +7,51 @@ type Input = {
   email: string;
   password: string;
 };
-type Output = {
-  token: string;
-};
 
-export class LoginUser implements UseCase<Input, Output | Status> {
+export class LoginUser implements UseCase<Input, any> {
   private prisma: PrismaClient;
 
   constructor() {
     this.prisma = new PrismaClient();
   }
 
-  async execute(input: Input): Promise<Output | Status> {
+  async execute(input: Input): Promise<any> {
     const { email, password } = input;
 
-    const emailSearch = await this.prisma.user.findFirst({
+    const user = await this.prisma.user.findFirst({
       where: {
         email: email,
       },
     });
 
-    if (!emailSearch) {
+    if (!user) {
       return { message: "user or password incorrect", status: "error" };
     }
 
-    const passwordMatch = await compare(password, emailSearch.password);
+    const passwordMatch = await compare(password, user.password);
 
     if (!passwordMatch) {
       return { message: "user or password incorrect", status: "error" };
     }
 
+    if (user && passwordMatch) {
+      await this.prisma.user.update({
+        where: { id: user.id },
+        data: { lastLogin: new Date() },
+      });
+    }
+
     const token = await jwt.sign({}, process.env.UUID ?? "", {
-      subject: emailSearch.id,
+      subject: user.id,
       expiresIn: "30min",
     });
 
-    return { token };
+    return {
+      token: token,
+      id: user.id,
+      createdAt: user.createdAt,
+      updateAt: user.updateAt,
+      lastLogin: user.lastLogin,
+    };
   }
 }

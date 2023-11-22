@@ -11,13 +11,13 @@ type Input = {
   telephone: Telephone[];
 };
 
-export class RegisterUser implements UseCase<Input, User | Status> {
+export class RegisterUser implements UseCase<Input, any> {
   private prisma: PrismaClient;
   constructor() {
     this.prisma = new PrismaClient();
   }
 
-  async execute(data: Input): Promise<User | Status> {
+  async execute(data: Input): Promise<any> {
     try {
       const { name, email, password, telephone } = data;
 
@@ -47,7 +47,11 @@ export class RegisterUser implements UseCase<Input, User | Status> {
         },
       });
 
-      return user;
+      return {
+        id: user.id,
+        createdAt: user.createdAt,
+        updateAt: user.updateAt,
+      };
     } catch (error) {
       console.log(error);
       return { status: "error", message: `error is ${error}` };
