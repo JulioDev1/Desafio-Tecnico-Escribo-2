@@ -36,13 +36,6 @@ export class LoginUser implements UseCase<Input, Output | Status> {
       return { message: "user or password incorrect", status: "error" }
     }
 
-    if (user && passwordMatch) {
-      await this.prisma.user.update({
-        where: { id: user.id },
-        data: { lastLogin: new Date() },
-      })
-    }
-
     const token = await jwt.sign({}, process.env.UUID ?? "", {
       subject: user.id,
       expiresIn: "30min",
@@ -53,7 +46,7 @@ export class LoginUser implements UseCase<Input, Output | Status> {
       id: user.id,
       createdAt: user.createdAt,
       updateAt: user.updateAt,
-      lastLogin: user.lastLogin,
+      lastLogin: user.lastLogin === null ? new Date() : user.lastLogin,
     }
   }
 }
