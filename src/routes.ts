@@ -1,6 +1,7 @@
 import { Router } from "express";
 import RegisterController from "./adpaters/RegisterController";
 import AuthController from "./adpaters/AuthController";
+import { AuthMiddleware } from "./Middleware/Authmiddleware";
 
 const router = Router();
 
@@ -10,7 +11,7 @@ const loginController = new AuthController();
 router.post("/create", registerController.createAccountController);
 router.post("/authenticate", loginController.authAccountController);
 
-router.get("/get-user", (request, response) => {
+router.get("/get-user", AuthMiddleware, (request, response) => {
   response.json([
     { id: 1, name: "teste" },
     { id: 2, name: "acess route" },
