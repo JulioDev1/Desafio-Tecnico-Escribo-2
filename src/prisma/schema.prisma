@@ -16,8 +16,9 @@ model User{
   name           String
   telephone      PhoneNumber[]
   password       String
-
+  lastLogin      DateTime?
   createdAt      DateTime     @default(now())
+  updateAt       DateTime?    @updatedAt
 }
 model PhoneNumber{
   id      String       @id @default(uuid())
