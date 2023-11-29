@@ -44,4 +44,6 @@ para verificar os teste feito pelo jest:
 - **Jest**: para testes da aplicação
 - **Bcrypt**: para criptografia de senha
 - **tsx** : para execução moderna do codigo
-- tsup: transpila o codigo de typescript para javascript 
+- **tsup**: transpila o codigo de typescript para javascript
+- **Prisma**: ORM usado para executar comando do banco de dados
+- **SQLite**: banco de dados simplificado
