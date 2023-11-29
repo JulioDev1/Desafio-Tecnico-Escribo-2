@@ -39,7 +39,9 @@ para verificar os teste feito pelo jest:
 - **Typescript**: adicionar tipagem e os tipos dados serem mais preciso em seus tipos
 - **NodeJs**: Run time usada para compilar o codigo
 - **Express**: executar as rotas e requisições
-- **eslint**: adicionar padrões ao codigo
-- **prettier**: para adicionar padrão de indentação de codigo
-- **jest**: para testes da apliocação
-- **bcrypt**: para criptografia de senha
+- **Eslint**: adicionar padrões de escritar ao codigo
+- **Prettier**: para adicionar padrão de indentação de codigo
+- **Jest**: para testes da aplicação
+- **Bcrypt**: para criptografia de senha
+- **tsx** : para execução moderna do codigo
+- tsup: transpila o codigo de typescript para javascript 
